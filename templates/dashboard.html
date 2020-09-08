@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <style>
+            body { background: black; font-family: arial; text-align: center; color: white; }
+            table { background: white; color: black; margin: auto; border-radius: 10px; }
+            td { padding: 15px; }
+            th { background: lightyellow; padding: 10px; }
+        </style>
+    </head>
+
+    <body>
+        <img src="https://alpaca.markets/docs/images/alpacalogo.png" />
+        <h2>Alpaca Dashboard</h2>
+
+        this is local
+        <table>
+            <tr>
+                <th>created</th>
+                <th>symbol</th>
+                <th>type</th>
+                <th>side</th>
+                <th>qty</th>
+                <th>limit price</th>
+                <th>filled price</th>
+            </tr>
+            {% for order in alpaca_orders %}
+                <tr>
+                    <td>{{ order.created_at }}</td>
+                    <td>{{ order.symbol }}</td>
+                    <td>{{ order.type }}</td>
+                    <td>{{ order.side }}</td>
+                    <td>{{ order.qty }}</td>
+                    <td>{{ order.limit_price }}</td>
+                    <td>{{ order.filled_avg_price }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
