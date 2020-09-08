@@ -1,0 +1,24 @@
+{
+	"passphrase": "somelongstring123",
+	"time": "2020-09-05T19:47:00Z",
+	"ticker": "AAPL",
+	"bar": {
+		"time": "2020-09-05T19:46:00Z",
+		"open": 126.35,
+		"high": 128.02,
+		"low": 126.02,
+		"close": 127.75,
+		"volume": 12345
+	},
+	"strategy": {
+		"position_size": 171,
+		"order_action": "buy",
+		"order_contracts": 171,
+		"order_price": 128.50,
+		"order_id": "Close entry(s) order long",
+		"market_position": "long",
+		"market_position_size": 171,
+		"prev_market_position": "flat",
+		"prev_market_position_size": 0
+	}
+}
