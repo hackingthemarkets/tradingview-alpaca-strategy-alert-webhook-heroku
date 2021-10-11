@@ -37,6 +37,6 @@ def webhook():
             "content": f"tradingview strategy alert triggered: {quantity} {symbol} @ {price}"
         }
 
-        requests.post(config.DISCORD_URL, json=chat_message)
+        requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
 
     return webhook_message
