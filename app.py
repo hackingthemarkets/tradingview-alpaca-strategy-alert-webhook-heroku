@@ -27,6 +27,8 @@ def webhook():
     symbol = webhook_message['ticker']
     side = webhook_message['strategy']['order_action']
     
+    
+    
     order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
 
     # if a DISCORD URL is set in the config file, we will post to the discord webhook
