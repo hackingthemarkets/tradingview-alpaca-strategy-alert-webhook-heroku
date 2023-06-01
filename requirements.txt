@@ -1,4 +1,4 @@
 flask
 gunicorn
-alpaca-trade-api
+alpaca-py
 requests

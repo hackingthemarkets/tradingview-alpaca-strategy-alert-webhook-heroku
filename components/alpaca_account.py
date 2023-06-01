@@ -1,16 +1,12 @@
 from flask import Flask, render_template, request
 import alpaca_trade_api as tradeapi
+
 import config, json, requests
 
-api = TradingClient(confing.API_KEY, config.SECRET_KEY, paper=True)
-
-from alpaca.trading.client import TradingClient
-from alpaca.trading.requests import GetAssetsRequest
-
-trading_client = TradingClient('api-key', 'secret-key')
+api = tradeapi.REST(config.API_KEY, config.API_SECRET, paper=True)
 
 # Get our account information.
-account = trading_client.get_account()
+account = api.get_account()
 
 # Check if our account is restricted from trading.
 if account.trading_blocked:
@@ -18,4 +14,3 @@ if account.trading_blocked:
 
 # Check how much money we can use to open new positions.
 print('${} is available as buying power.'.format(account.buying_power))
-

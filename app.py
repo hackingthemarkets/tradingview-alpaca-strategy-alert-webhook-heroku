@@ -2,15 +2,28 @@ from flask import Flask, render_template, request
 import alpaca_trade_api as tradeapi
 import config, json, requests
 
+
 app = Flask(__name__)
 
 api = tradeapi.REST(config.API_KEY, config.API_SECRET, base_url='https://paper-api.alpaca.markets')
 
+# Vars
+
+# Get the last 100 closed orders
+orders = api.list_orders(
+    status='closed',
+    limit=100,
+    nested=True  # show nested multi-leg orders
+)
+accountInfo = api.get_account()
+
 @app.route('/')
 def dashboard():
-    orders = api.list_orders()
-    
     return render_template('dashboard.html', alpaca_orders=orders)
+
+@app.route('/account', methods=['GET'])
+def account():
+    return f'{accountInfo}'
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -29,7 +42,7 @@ def webhook():
     
     
     
-    order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
+    # order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
 
     # if a DISCORD URL is set in the config file, we will post to the discord webhook
     if config.DISCORD_WEBHOOK_URL:
