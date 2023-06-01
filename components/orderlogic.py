@@ -15,12 +15,7 @@ api = tradeapi.REST(config.API_KEY, config.API_SECRET, paper=True) #api stuff
 account = api.get_account()
 
 
-# Check if our account is restricted from trading.
-if account.trading_blocked:
-    canTrade = False
-    print('Account is currently restricted from trading.')
-else:
-    canTrade = True
+
 
 # Webhook Variables
 #price = webhook_message['strategy']['order_price']
@@ -31,21 +26,37 @@ else:
 
 
 # ============================== Execution Logic =================================
+def executeOrder(symbol,side,quantity,price,tp):
 
-if (side=='buy' and canTrade==True and account.daytrade_count<3):
-    quantity = math.floor((account.non_marginable_buying_power * config.RISK_EXPOSURE) / price) #Position Size Based on Risk Exposure
-    order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price*slippage)
-elif (side=='sell' and canTrade==True):
-    position = api.get_open_posistion(symbol)
-    if (position.status_code == 200 and tp=='yes'):
-        quantity = position.qty()/config.TAKEPROFIT_POSITION
-        order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
-    elif (position.status_code == 200 and tp=='no'):
-        order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
+    # Check if our account is restricted from trading.
+    if account.trading_blocked:
+        canTrade = False
+        print('Account is currently restricted from trading.')
     else:
-        print('No Existing Position')   
-else:
-    print('Order is invalid')
+        canTrade = True
+
+    if (side=='buy' and canTrade==True and account.daytrade_count<3):
+
+        quantity = math.floor((account.non_marginable_buying_power * config.RISK_EXPOSURE) / price) #Position Size Based on Risk Exposure
+        order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price*slippage)
+
+    elif (side=='sell' and canTrade==True):
+
+        position = api.get_open_posistion(symbol) # Check if Position Exists before Sell
+
+        if (position.status_code == 200 and tp=='yes'):
+
+            quantity = position.qty()*config.TAKEPROFIT_POSITION
+            order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
+
+        elif (position.status_code == 200 and tp=='no'):
+
+            order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
+            
+        else:
+            print('No Existing Position')   
+    else:
+        print('Order is invalid')
 
 
 

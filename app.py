@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import alpaca_trade_api as tradeapi
 import config, json, requests
+from orderlogic import executeOrder
 
 
 app = Flask(__name__)
@@ -39,12 +40,10 @@ def webhook():
     side = webhook_message['strategy']['order_action']
     price = webhook_message['strategy']['order_price']
     quantity = webhook_message['strategy']['order_contracts']
+    tp = webhook_message['strategy']['tp']
 
+    executeOrder(symbol,side,quantity,price,tp)
     
-    
-    
-    # order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
-
     # if a DISCORD URL is set in the config file, we will post to the discord webhook
     if config.DISCORD_WEBHOOK_URL:
         chat_message = {
