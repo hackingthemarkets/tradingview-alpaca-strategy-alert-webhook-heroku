@@ -31,7 +31,8 @@ def executeOrder(symbol,side,quantity,price,tp):
     # Check if our account is restricted from trading.
     if account.trading_blocked:
         canTrade = False
-        print('Account is currently restricted from trading.')
+        print('Error: Account is currently restricted from trading.')
+        return 'Error: Account is currently restricted from trading.'
     else:
         canTrade = True
 
@@ -52,11 +53,13 @@ def executeOrder(symbol,side,quantity,price,tp):
         elif (position.status_code == 200 and tp=='no'):
 
             order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
-            
+
         else:
-            print('No Existing Position')   
+            print('Error: No Existing Position')
+            return 'Error: No Existing Position' 
     else:
-        print('Order is invalid')
+        print('Error: Order is invalid')
+        return 'Error: Order is invalid'
 
 
 
