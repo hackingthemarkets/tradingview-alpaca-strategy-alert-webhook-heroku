@@ -14,7 +14,10 @@ account = api.get_account()
 if account.trading_blocked:
     canTrade = False
     print('Account is currently restricted from trading.')
-    else
+else
+    canTrade = True
+    
+
         
 # Check how much money we can use to open new positions.
 print('${} is available as buying power.'.format(account.buying_power))
