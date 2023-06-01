@@ -1,4 +1,4 @@
 flask
 gunicorn
-alpaca-py
+alpaca-py == 0.8.2 
 requests

@@ -1,23 +1,53 @@
 from flask import Flask, render_template, request
 import alpaca_trade_api as tradeapi
+import alpaca.trading.requests
+from alpaca.trading.client import TradingClient
+from alpaca.trading.enums import OrderSide, TimeInForce
 
 import config, json, requests
 
 # Declare some variables.
-var bool canTrade = True
+canTrade = True
+slippage = config.RISK_EXPOSURE + 1
+api = tradeapi.REST(config.API_KEY, config.API_SECRET, paper=True) #api stuff
 
 # Get our account information.
-api = tradeapi.REST(config.API_KEY, config.API_SECRET, paper=True)
 account = api.get_account()
+
 
 # Check if our account is restricted from trading.
 if account.trading_blocked:
     canTrade = False
     print('Account is currently restricted from trading.')
-else
+else:
     canTrade = True
-    
 
-        
+# Webhook Variables
+#price = webhook_message['strategy']['order_price']
+#quantity = webhook_message['strategy']['order_contracts']
+#symbol = webhook_message['ticker']
+#side = webhook_message['strategy']['order_action']
+#tp = webhook_message['strategy']['tp']
+
+
+# ============================== Execution Logic =================================
+
+if (side=='buy' and canTrade==True and account.daytrade_count<3):
+    quantity = math.floor((account.non_marginable_buying_power * config.RISK_EXPOSURE) / price) #Position Size Based on Risk Exposure
+    order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price*slippage)
+elif (side=='sell' and canTrade==True):
+    position = api.get_open_posistion(symbol)
+    if (position.status_code == 200 and tp=='yes'):
+        quantity = position.qty()/config.TAKEPROFIT_POSITION
+        order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
+    elif (position.status_code == 200 and tp=='no'):
+        order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
+    else:
+        print('No Existing Position')   
+else:
+    print('Order is invalid')
+
+
+
 # Check how much money we can use to open new positions.
 print('${} is available as buying power.'.format(account.buying_power))

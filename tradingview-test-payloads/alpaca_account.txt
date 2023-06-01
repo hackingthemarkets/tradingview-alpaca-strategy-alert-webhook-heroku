@@ -1,5 +1,5 @@
 {
-  "id": "1c1f2c0c-7b4b-4380-8b4f-c9b975c43cad",
+  "id": "xxxxxxxxxxxxxxxx",
   "admin_configurations": {
     "Configurations": {}
   },
@@ -11,7 +11,7 @@
     "pdt_check": "entry",
     "trade_confirm_email": "all"
   },
-  "account_number": "PA3O369M4QOH",
+  "account_number": "xxxxxxxx",
   "status": "ACTIVE",
   "crypto_status": "ACTIVE",
   "currency": "USD",
