@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request
-import alpaca_trade_api as tradeapi
+#import alpaca_trade_api as tradeapi
 import alpaca.trading.requests
 from alpaca.trading.client import TradingClient
 from alpaca.trading.enums import OrderSide, TimeInForce
+import math
 
 import config, json, requests
 
 # Declare some variables.
 canTrade = True
 slippage = config.RISK_EXPOSURE + 1
-api = tradeapi.REST(config.API_KEY, config.API_SECRET, paper=True) #api stuff
+api = TradingClient(config.API_KEY, config.API_SECRET, paper=True) #api stuff
 
 # Get our account information.
 account = api.get_account()
