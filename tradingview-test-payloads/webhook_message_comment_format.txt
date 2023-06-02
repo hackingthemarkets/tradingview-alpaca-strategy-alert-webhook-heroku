@@ -1,0 +1,31 @@
+{
+    \n\"passphrase\": \"somelongstring123\",
+    \n\"time\": \"{{timenow}}\",
+    \n\"exchange\": \"{{exchange}}\",
+    \n\"ticker\": \"{{ticker}}\",
+    \n\"bar\": {
+        \n\"time\": \"{{time}}\",
+        \n\"open\": {{open}},
+        \n\"high\": {{high}},
+        \n\"low\": {{low}},
+        \n\"close\": {{close}},
+        \n\"volume\": {{volume}}
+    \n},
+    \n\"strategy\": {
+        \n\"position_size\": {{strategy.position_size}},
+        \n\"order_action\": \"{{strategy.order.action}}\",
+        \n\"order_contracts\": {{strategy.order.contracts}},
+        \n\"order_price\": {{strategy.order.price}},
+        \n\"order_id\": \"{{strategy.order.id}}\",
+        \n\"comment\": \"{{strategy.order.comment}}\",
+        \n\"market_position\": \"{{strategy.market_position}}\",
+        \n\"market_position_size\": {{strategy.market_position_size}},
+        \n\"prev_market_position\": \"{{strategy.prev_market_position}}\",
+        \n\"prev_market_position_size\": {{strategy.prev_market_position_size}}
+    \n}
+\n}
+
+
+"{\n\"passphrase\": \"dickclickrichshit\",\n\"time\": \"{{timenow}}\",\n\"exchange\": \"{{exchange}}\",\n\"ticker\": \"{{ticker}}\",\n\"bar\": {\n\"time\": \"{{time}}\",\n\"open\": {{open}},\n\"high\": {{high}},\n\"low\": {{low}},\n\"close\": {{close}},\n\"volume\": {{volume}}\n},\n\"strategy\": {\n\"position_size\": {{strategy.position_size}},\n\"order_action\": \"{{strategy.order.action}}\",\n\"order_contracts\": {{strategy.order.contracts}},\n\"order_price\": {{strategy.order.price}},\n\"order_id\": \"{{strategy.order.id}}\",\n\"comment\": \"{{strategy.order.comment}}\",\n\"market_position\": \"{{strategy.market_position}}\",\n\"market_position_size\": {{strategy.market_position_size}},\n\"prev_market_position\": \"{{strategy.prev_market_position}}\",\n\"prev_market_position_size\": {{strategy.prev_market_position_size}}\n}\n}"
+
+
