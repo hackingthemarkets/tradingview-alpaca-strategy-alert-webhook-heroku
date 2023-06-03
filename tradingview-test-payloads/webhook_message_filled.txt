@@ -1,5 +1,5 @@
 {
-	"passphrase": "password",
+	"passphrase": "dickclickrichshit",
 	"time": "2020-09-05T19:47:00Z",
 	"ticker": "AAPL",
 	"bar": {
@@ -14,12 +14,13 @@
 		"position_size": 171,
 		"order_action": "buy",
 		"order_contracts": 171,
+		"take_profit_percent": 0.50,
 		"order_price": 128.50,
 		"order_id": "Close entry(s) order long",
+		"comment": "This Is BANANA'S",
 		"market_position": "long",
 		"market_position_size": 171,
 		"prev_market_position": "flat",
-		"prev_market_position_size": 0,
-    	"comment": "balls"
+		"prev_market_position_size": 0
 	}
 }

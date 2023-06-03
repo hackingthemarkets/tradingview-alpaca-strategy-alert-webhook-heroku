@@ -7,12 +7,13 @@ import math
 
 import config, json, requests
 
-# Declare some variables.
+# Declare some variables
+
 canTrade = True
 slippage = config.RISK_EXPOSURE + 1
 api = TradingClient(config.API_KEY, config.API_SECRET, paper=True) #api stuff
 
-# Get our account information.
+# Get our account information
 account = api.get_account()
 
 
@@ -41,7 +42,7 @@ def executeOrder(webhook_message):
         canTrade = False
         print('Error: Account is currently restricted from trading.')
         return 'Error: Account is currently restricted from trading.'
-    elif (int(account.daytrade_count)< 3):
+    elif (int(account.daytrade_count)< 3): # Check if were approaching PDT limit
         canTrade = False
         print('Error: Approaching Day Trade Limit')
         return 'Error: Approaching Day Trade Limit'
@@ -60,11 +61,11 @@ def executeOrder(webhook_message):
 
         position = api.get_open_position(symbol) # Check if Position Exists before Sell
         
-        if (position.status_code == 200 and comment=='yes'):
+        if (position.status_code == 200 and orderID=='TP'):
             qty = position.qty()*config.TAKEPROFIT_POSITION
             order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
 
-        elif (position.status_code == 200 and comment=='no'):
+        elif (position.status_code == 200 and orderID=='Exit'):
 
             order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
 
