@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, jsonify
+from flask import Flask, render_template, request, abort, jsonify, render_template_string
 #import alpaca_trade_api as tradeapi
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import GetOrdersRequest
@@ -24,7 +24,10 @@ def dashboard():
 
 @app.route('/account', methods=['GET'])
 def account():
-    return f'{accountInfo}'
+    payload = f'{accountInfo}'
+    pretty_json = json.dumps(payload, indent=4)
+    html = f"<pre>{pretty_json}</pre>"
+    return render_template_string(html)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():

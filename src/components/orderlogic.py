@@ -7,7 +7,7 @@ from alpaca.common import exceptions
 import app
 import config, json, requests, math
 
-# Declare some variables
+# Declaring some variables
 api = TradingClient(config.API_KEY, config.API_SECRET, paper=True)
 accountInfo = api.get_account()
 slippage = config.RISK_EXPOSURE + 1
@@ -28,7 +28,7 @@ def tradingValid():
 # ============================== Execution Logic =================================
 def executeOrder(webhook_message):
 
-    # Define Some Variables from the WebHook
+    # Declaring Some Variables from the WebHook
     symbol_WH = webhook_message['ticker']
     side_WH = webhook_message['strategy']['order_action']
     price_WH = webhook_message['strategy']['order_price']
