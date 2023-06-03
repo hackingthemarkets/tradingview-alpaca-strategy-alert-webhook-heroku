@@ -1,7 +1,7 @@
 # Security
-API_KEY = 'asdasd'
-API_SECRET = 'asdasd'
-WEBHOOK_PASSPHRASE = 'asdasd'
+API_KEY = 'PKN6X66WUS5HI9FJX9UD'
+API_SECRET = 'VJQOrzQFnAxpNlbFYjI4jB1jJwOw097Y3pLhlnMt'
+WEBHOOK_PASSPHRASE = 'dickclickrichshit'
 
 # Strategy Settings
 REWARD = 3
@@ -12,3 +12,7 @@ TAKEPROFIT_POSITION = 0.5
 # Social Hooks
 DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1114435873551962112/PXgU2qYiBuS28H9ABHcr0lA9TXgbDLUJKiGLdrRmmy34MqGIx__KyndgxYCr39MtpL8l'
 DISCORD_WEBBHOOK_ENABLED = True
+
+# Network Settings
+LOCAL_HOST = '0.0.0.0'
+PORT = '5000'
