@@ -2,8 +2,15 @@ from flask import Flask, render_template, request, abort
 #import alpaca_trade_api as tradeapi
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import GetOrdersRequest
-import config, json, requests
+import config, json, requests, subprocess
 from components import orderlogic
+
+
+# Start ngrok process
+#ngrok_process = subprocess.Popen(['ngrok', 'http', '5000'])
+
+# Print the ngrok URL
+#print("Ngrok URL:", ngrok_process.stdout.readline().strip().decode())
 
 
 app = Flask(__name__)
