@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 #import alpaca_trade_api as tradeapi
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import GetOrdersRequest
@@ -20,6 +20,7 @@ orderParams = GetOrdersRequest(
 )
 orders = api.get_orders(filter=orderParams)
 accountInfo = api.get_account()
+
 
 @app.route('/')
 def dashboard():
@@ -43,10 +44,9 @@ def webhook():
     side = webhook_message['strategy']['order_action']
     price = webhook_message['strategy']['order_price']
     quantity = webhook_message['strategy']['order_contracts']
-    tp = webhook_message['strategy']['tp']
+    comment = webhook_message['strategy']['comment']
+    orderID = webhook_message['strategy']['order_id']
 
-    orderlogic.executeOrder(symbol,side,quantity,price,tp)
-    
     # if a DISCORD URL is set in the config file, we will post to the discord webhook
     if config.DISCORD_WEBHOOK_URL:
         chat_message = {
@@ -56,5 +56,15 @@ def webhook():
         }
 
         requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
+    
 
+    
+    try:
+        orderlogic.executeOrder(webhook_message)
+        raise Exception("Something went wrong")
+    except Exception as e:
+        error_message = "An error occurred: {}".format(e)
+        return error_message, 500  # Return error message with HTTP status code 500
+    
     return webhook_message
+ 

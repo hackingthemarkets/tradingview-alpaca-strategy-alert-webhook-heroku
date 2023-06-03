@@ -10,4 +10,4 @@ RISK_EXPOSURE = 0.05
 TAKEPROFIT_POSITION = 0.5
 
 # Social Hooks
-DISCORD_WEBHOOK_URL = False # use a string containing your discord webhook url to enable
+DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1114435873551962112/PXgU2qYiBuS28H9ABHcr0lA9TXgbDLUJKiGLdrRmmy34MqGIx__KyndgxYCr39MtpL8l'

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 #import alpaca_trade_api as tradeapi
-import alpaca.trading.requests
+from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest
 from alpaca.trading.client import TradingClient
 from alpaca.trading.enums import OrderSide, TimeInForce
 import math
@@ -27,31 +27,44 @@ account = api.get_account()
 
 
 # ============================== Execution Logic =================================
-def executeOrder(symbol,side,quantity,price,tp):
+def executeOrder(webhook_message):
+    symbol = webhook_message['ticker']
+    side = webhook_message['strategy']['order_action']
+    price = webhook_message['strategy']['order_price']
+    qty = webhook_message['strategy']['order_contracts']
+    comment = webhook_message['strategy']['comment']
+    orderID = webhook_message['strategy']['order_id']
+    print(symbol, side, price, qty, side, 'limit', 'gtc', comment, orderID)
 
     # Check if our account is restricted from trading.
     if account.trading_blocked:
         canTrade = False
         print('Error: Account is currently restricted from trading.')
         return 'Error: Account is currently restricted from trading.'
+    elif (int(account.daytrade_count)< 3):
+        canTrade = False
+        print('Error: Approaching Day Trade Limit')
+        return 'Error: Approaching Day Trade Limit'
     else:
         canTrade = True
 
-    if (side=='buy' and canTrade==True and account.daytrade_count<3):
+    # Execution    
 
-        quantity = math.floor((account.non_marginable_buying_power * config.RISK_EXPOSURE) / price) #Position Size Based on Risk Exposure
-        order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price*slippage)
+    if (side=='buy' and canTrade==True):
+        cashAvailable = int(round(float(account.non_marginable_buying_power)))
+        quantity = round((cashAvailable * config.RISK_EXPOSURE) / price) #Position Size Based on Risk Exposure
+        orderData = LimitOrderRequest(symbol=webhook_message['ticker'], qty=quantity, side = webhook_message['strategy']['order_action'], type='limit', time_in_force='gtc', limit_price = webhook_message['strategy']['order_price'])
+        order = api.submit_order(orderData)
 
     elif (side=='sell' and canTrade==True):
 
-        position = api.get_open_posistion(symbol) # Check if Position Exists before Sell
-
-        if (position.status_code == 200 and tp=='yes'):
-
-            quantity = position.qty()*config.TAKEPROFIT_POSITION
+        position = api.get_open_position(symbol) # Check if Position Exists before Sell
+        
+        if (position.status_code == 200 and comment=='yes'):
+            qty = position.qty()*config.TAKEPROFIT_POSITION
             order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
 
-        elif (position.status_code == 200 and tp=='no'):
+        elif (position.status_code == 200 and comment=='no'):
 
             order = api.submit_order(symbol, quantity, side, price, 'market', 'gtc')
 
@@ -64,5 +77,9 @@ def executeOrder(symbol,side,quantity,price,tp):
 
 
 
+
 # Check how much money we can use to open new positions.
-print('${} is available as buying power.'.format(account.buying_power))
+print(
+    '${} is available as buying power.'.format(account.buying_power),
+)
+
