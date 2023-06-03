@@ -48,11 +48,11 @@ def webhook():
     orderID = webhook_message['strategy']['order_id']
 
     # if a DISCORD URL is set in the config file, we will post to the discord webhook
-    if config.DISCORD_WEBHOOK_URL:
+    if config.DISCORD_WEBHOOK_URL and config.DISCORD_WEBBHOOK_ENABLED==True:
         chat_message = {
-            "username": "strategyalert",
+            "username": "StrategyAlert",
             "avatar_url": "https://i.imgur.com/4M34hi2.png",
-            "content": f"tradingview strategy alert triggered: {quantity} {symbol} @ {price}"
+            "content": f"TradingView strategy alert triggered: {quantity} shares of {symbol} @ {price}"
         }
 
         requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
