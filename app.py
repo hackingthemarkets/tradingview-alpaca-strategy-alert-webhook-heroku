@@ -72,6 +72,6 @@ def webhook():
     except Exception as e:
         error_message = "An error occurred: {}".format(e)
         return error_message, 500  # Return error message with HTTP status code 500
-    
-    return webhook_message
+    finally:
+        return webhook_message
  
