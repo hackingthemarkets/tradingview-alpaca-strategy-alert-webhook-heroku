@@ -1,5 +1,5 @@
 {
-	"passphrase": "dickclickrichshit",
+	"passphrase": "",
 	"time": "2020-09-05T19:47:00Z",
 	"ticker": "AAPL",
 	"bar": {
