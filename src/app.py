@@ -18,9 +18,21 @@ orders = api.get_orders(filter=orderParams)
 # Start Up Message.
 start.startMessage(accountInfo.buying_power,accountInfo.daytrade_count)
 
+# Making the dashboard dynamic
+def fetch_orders():
+    orders = api.get_orders(filter=orderParams)
+    return orders
+
+def fetch_account_info():
+    account_info = api.get_account()
+    return account_info
+
+# Flask Routes 
 @app.route('/')
 def dashboard():
-    return render_template('dashboard.html', alpaca_orders=orders)
+    orders = fetch_orders()
+    accountinfo = fetch_account_info()
+    return render_template('dashboard.html', alpaca_orders=orders, account_info=accountInfo)
 
 @app.route('/account', methods=['GET'])
 def account():
@@ -52,11 +64,11 @@ def webhook():
 
             # if a DISCORD URL is set in the config file, we will post to the discord webhook
             if config.DISCORD_WEBHOOK_URL and config.DISCORD_WEBBHOOK_ENABLED==True:
-                
+ 
                 chat_message = {
                     "username": "StrategyAlert",
                     "avatar_url": "https://i.imgur.com/4M34hi2.png",
-                    "content": f"TradingView strategy alert triggered: {quantity} shares of {symbol} @ {price}"
+                    "content": f"TradingView strategy alert triggered: {side} {quantity} shares of {symbol} @ {price}"
                 }
                 requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
             

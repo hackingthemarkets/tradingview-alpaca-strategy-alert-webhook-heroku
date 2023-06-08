@@ -1,39 +1,77 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <style>
-            body { background: black; font-family: arial; text-align: center; color: white; }
-            table { background: white; color: black; margin: auto; border-radius: 10px; }
-            td { padding: 15px; }
-            th { background: lightyellow; padding: 10px; }
-        </style>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
-
     <body>
-        <img src="https://alpaca.markets/docs/alpaca_icon@1x.png" />
-        <h2>Alpaca Dashboard</h2>
+        <div class="container">
+            <img src="https://alpaca.markets/docs/alpaca_icon@1x.png" alt="Alpaca Icon" />
+            <h2>Alpaca Dashboard</h2>
+            <p>This is local</p>
+            
+            <div class="tab">
+                <button class="tab-button active" onclick="openTab('orders')">Orders</button>
+                <button class="tab-button" onclick="openTab('account')">Account</button>
+            </div>
 
-        this is local
-        <table>
-            <tr>
-                <th>created</th>
-                <th>symbol</th>
-                <th>type</th>
-                <th>side</th>
-                <th>qty</th>
-                <th>limit price</th>
-                <th>filled price</th>
-            </tr>
-            {% for order in alpaca_orders %}
-                <tr>
-                    <td>{{ order.created_at }}</td>
-                    <td>{{ order.symbol }}</td>
-                    <td>{{ order.type }}</td>
-                    <td>{{ order.side }}</td>
-                    <td>{{ order.qty }}</td>
-                    <td>{{ order.limit_price }}</td>
-                    <td>{{ order.filled_avg_price }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+            <div id="orders" class="tab-content active">
+                <table>
+                    <tr>
+                        <th>Created</th>
+                        <th>Symbol</th>
+                        <th>Type</th>
+                        <th>Side</th>
+                        <th>Quantity</th>
+                        <th>Limit Price</th>
+                        <th>Filled Price</th>
+                    </tr>
+                    {% for order in alpaca_orders %}
+                    <tr>
+                        <td>{{ order.created_at }}</td>
+                        <td>{{ order.symbol }}</td>
+                        <td>{{ order.type }}</td>
+                        <td>{{ order.side }}</td>
+                        <td>{{ order.qty }}</td>
+                        <td>{{ order.limit_price }}</td>
+                        <td>{{ order.filled_avg_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div id="account" class="tab-content">
+                {% if account_info %}
+                    <table>
+                    {% for item in account_info %}
+                        <tr>
+                            <th>{{ item[0] }}</th>
+                            <td>{{ item[1] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <p>No account information available.</p>
+                {% endif %}
+            </div>
+            
+        </div>
+        <script>
+            function openTab(tabName, event) {
+                var i, tabContent, tabButton;
+        
+                tabContent = document.getElementsByClassName("tab-content");
+                for (i = 0; i < tabContent.length; i++) {
+                    tabContent[i].style.display = "none";
+                }
+        
+                tabButton = document.getElementsByClassName("tab-button");
+                for (i = 0; i < tabButton.length; i++) {
+                    tabButton[i].className = tabButton[i].className.replace(" active", "");
+                }
+        
+                document.getElementById(tabName).style.display = "block";
+                event.currentTarget.className += " active";
+            }
+        </script>
     </body>
 </html>

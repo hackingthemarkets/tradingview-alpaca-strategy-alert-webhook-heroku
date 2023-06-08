@@ -19,7 +19,7 @@ def tradingValid():
     if accountInfo.trading_blocked:
         print('Error: Account is currently restricted from trading.')
         return 'Error: Account is currently restricted from trading.'
-    elif (int(accountInfo.daytrade_count) > 3): # Check if were approaching PDT limit
+    elif (int(accountInfo.daytrade_count) > 3) and config.DAYTRADE_ALLOW == False: # Check if were approaching PDT limit
         print('Error: Approaching Day Trade Limit')
         return 'Error: Approaching Day Trade Limit'
     else:
@@ -45,9 +45,17 @@ def executeOrder(webhook_message):
         # Buy Side
         if side_WH=='buy':
             cashAvailable = int(round(float(accountInfo.non_marginable_buying_power)))
-            quantity = round((cashAvailable * config.RISK_EXPOSURE) / price_WH) #Position Size Based on Risk Exposure
-            orderData = LimitOrderRequest(symbol=symbol_WH, qty=quantity, side=side_WH, type='limit', time_in_force='gtc', limit_price=price_WH)
-            order = api.submit_order(orderData)
+            quantity = (cashAvailable * config.RISK_EXPOSURE) / price_WH #Position Size Based on Risk Exposure
+            if quantity >= 1:
+                orderData = LimitOrderRequest(symbol=symbol_WH, qty=round(quantity), side=side_WH, type='limit', time_in_force='gtc', limit_price=price_WH, client_order_id='SkyTraderBot#1')
+                order = api.submit_order(orderData)
+            elif config.FRACTIONAL_ALLOW == True:
+                orderData = MarketOrderRequest(symbol=symbol_WH, qty=quantity, side=side_WH, type='market', time_in_force='gtc', client_order_id='SkyTraderBot#1')
+                order = api.submit_order(orderData)
+            else:
+                response = "Invalid Buy Side Order"
+                print(response)
+                return response
 
         # Sell Side    
         elif (side_WH == 'sell'):
@@ -57,13 +65,14 @@ def executeOrder(webhook_message):
                 position = api.get_open_position(symbol_WH)
                 if orderID_WH == 'TP':
                     close_options = ClosePositionRequest(percentage=config.TAKEPROFIT_POSITION)
-                    order = api.close_position(symbol=symbol_WH,close_options=close_options)
+                    order = api.close_position(symbol_WH,close_options=close_options)
                 elif orderID_WH == 'Exit' or comment_WH == 'CL':
-                    order = api.close_position(symbol=symbol_WH)
+                    order = api.close_position(symbol_WH)
                 else:
-                    print('Error: No Existing Position')
-                    return 'Error: No Existing Position'   
-                raise Exception("Something went wrong")
+                    response = "Error: No Existing Position"
+                    print(response)
+                    return response
+                #raise Exception("Something went wrong")
             except exceptions.APIError as e:
                 raise e
     else:

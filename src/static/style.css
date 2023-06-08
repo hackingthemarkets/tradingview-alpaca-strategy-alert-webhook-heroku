@@ -1,0 +1,116 @@
+body {
+    background-color: #333;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #222;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 150px;
+}
+
+h2 {
+    text-align: center;
+    color: #fff;
+    margin-top: 20px;
+}
+
+p {
+    text-align: center;
+    color: #ccc;
+    margin-top: 10px;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.tab button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tab button.active {
+    background-color: #ccc;
+    color: #333;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #444;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+td:hover {
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #111;
+    font-weight: bold;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #333;
+}
+
+tr:nth-child(odd) {
+    background-color: #222;
+}
+
+tr:hover {
+    background-color: #444;
+}
+
+td {
+    color: #fff;
+}

@@ -12,5 +12,7 @@ src_folder = os.path.join(parent_dir, 'TV-Alpaca-Bot', 'src')
 # Change the current working directory to the src folder
 os.chdir(src_folder)
 
+os.system('export FLASK_ENV=development')
+
 # Now you can run the "flask run" command
-os.system('flask run')
+os.system('flask run --debug')
